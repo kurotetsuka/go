@@ -5,24 +5,29 @@ clean:
 	rm -rf bin/*
 
 #vars
-options = -A dead_code -A unused_variable
+warnings = -A dead_code -A unused_variable
+options = $(warnings) -g -L bin
+#options = $(warnings) -g --extern libasdf=bin/libasdf.so
+lib_opt = --crate-type=rlib
 
 #includes
+include deps.mk
 include lists.mk
 
 #compilation definitions
 $(binaries): bin/% : src/%.rs
-	rustc $(options) -g $< -o $@
+	rustc $(options) $< -o $@
+$(libraries): bin/lib%.rlib : src/%.rs
+	rustc $(options) $(lib_opt) $< -o $@
 
 #commands
-build: $(binaries)
+build: $(libraries) $(binaries)
 
 #tests
-test: bin/test
-	$<
+test: test-game
 
 test-asdf: bin/asdf
 	$<
 
-test-go-ai: bin/go_ai
+test-game: bin/go_game
 	$<
