@@ -20,7 +20,7 @@ pub mod go {
 			Cell{ stone: None}}
 	}
 
-	pub type Grid = Vec< Vec< Cell >>;
+	pub type Grid = Vec< Vec<Cell>>;
 
 	pub struct Board {
 		dim : u8,
